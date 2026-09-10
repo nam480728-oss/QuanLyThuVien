@@ -1,0 +1,5 @@
+# Liệt kê các thư viện cần thiết vào đây
+# Flask
+# Flask-SocketIO
+# PyMySQL
+# python-dotenv
