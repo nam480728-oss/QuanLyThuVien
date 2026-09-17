@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Base App</title>
+    <!-- Link tới file CSS bằng hàm url_for của Flask -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Chào mừng đến với Flask!</h1>
+        <p>Base project đã được thiết lập thành công.</p>
+    </div>
+</body>
+</html>
