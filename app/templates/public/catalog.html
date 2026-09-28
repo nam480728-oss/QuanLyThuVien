@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import book_card, pagination %}
+{% block title %}Kho sách — LibraHub{% endblock %}
+{% block content %}
+<section class="page-hero compact"><span class="section-kicker">KHO TRI THỨC</span><h1>Tìm cuốn sách dành cho bạn</h1><p>Tra cứu theo tên sách, tác giả, ISBN hoặc thể loại.</p></section>
+<section class="container section">
+    <form class="filter-bar" method="get">
+        <label class="search-field"><span>⌕</span><input name="q" value="{{ search }}" placeholder="Tên sách, tác giả, ISBN..."></label>
+        <select name="category" aria-label="Thể loại"><option value="">Tất cả thể loại</option>{% for category in categories %}<option value="{{ category.id }}" {{ 'selected' if selected_category == category.id }}>{{ category.name }}</option>{% endfor %}</select>
+        <select name="availability" aria-label="Tình trạng"><option value="">Mọi tình trạng</option><option value="available" {{ 'selected' if availability == 'available' }}>Còn sách</option></select>
+        <button class="btn btn-primary" type="submit">Lọc kết quả</button>
+    </form>
+    <div class="result-line"><strong>{{ books.total }}</strong> kết quả{% if search %} cho “{{ search }}”{% endif %}</div>
+    {% if books.items %}<div class="book-grid">{% for book in books.items %}{{ book_card(book) }}{% endfor %}</div>{{ pagination(books, 'public.catalog', {'q': search, 'category': selected_category or '', 'availability': availability}) }}{% else %}<div class="empty-state"><span>⌕</span><h3>Chưa tìm thấy sách phù hợp</h3><p>Thử thay đổi từ khóa hoặc bộ lọc.</p></div>{% endif %}
+</section>
+{% endblock %}

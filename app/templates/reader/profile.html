@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Hồ sơ — LibraHub{% endblock %}
+{% block content %}
+<section class="page-hero compact"><span class="section-kicker">TÀI KHOẢN</span><h1>Hồ sơ thành viên</h1><p>Cập nhật thông tin liên hệ của bạn.</p></section>
+<section class="container narrow section"><form method="post" class="panel form-panel"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><div class="profile-heading"><span class="avatar large">{{ current_user.full_name[0]|upper }}</span><div><h2>{{ current_user.full_name }}</h2><p>{{ current_user.email }}</p></div></div><div class="form-grid"><label>Họ và tên<input name="full_name" required value="{{ current_user.full_name }}"></label><label>Email<input value="{{ current_user.email }}" disabled><small>Email đăng nhập không thể tự thay đổi.</small></label><label>Số điện thoại<input name="phone" value="{{ current_user.phone or '' }}"></label><label class="full">Địa chỉ<textarea name="address" rows="3">{{ current_user.address or '' }}</textarea></label></div><div class="form-actions"><button class="btn btn-primary">Lưu thay đổi</button></div></form></section>
+{% endblock %}

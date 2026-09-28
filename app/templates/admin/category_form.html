@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Sửa thể loại — LibraHub{% endblock %}
+{% block content %}
+<section class="page-hero compact"><span class="section-kicker">DANH MỤC</span><h1>Cập nhật thể loại</h1><p>Chỉnh sửa tên và mô tả nhóm sách.</p></section>
+<section class="container narrow section"><form method="post" class="panel form-panel"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>Tên thể loại *<input name="name" required value="{{ request.form.get('name', category.name) }}"></label><label>Mô tả<textarea name="description" rows="5">{{ request.form.get('description', category.description or '') }}</textarea></label><div class="form-actions"><a class="btn btn-ghost" href="{{ url_for('admin.categories') }}">Hủy</a><button class="btn btn-primary">Lưu thay đổi</button></div></form></section>
+{% endblock %}

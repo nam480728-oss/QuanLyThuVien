@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Thể loại — LibraHub{% endblock %}
+{% block content %}
+<section class="page-hero compact admin-hero"><div class="container"><span class="section-kicker light">DANH MỤC</span><h1>Quản lý thể loại</h1><p>Tổ chức kho sách thành các nhóm dễ tra cứu.</p></div></section>
+<section class="container section admin-grid">
+  <form method="post" class="panel form-panel compact-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <span class="section-kicker">THỂ LOẠI MỚI</span><h2>Thêm danh mục</h2>
+    <label>Tên thể loại *<input name="name" required placeholder="Ví dụ: Khoa học"></label>
+    <label>Mô tả<textarea name="description" rows="4" placeholder="Mô tả ngắn..."></textarea></label>
+    <button class="btn btn-primary btn-block">Thêm thể loại</button>
+  </form>
+  <div class="panel">
+    <div class="panel-head"><div><span class="section-kicker">DANH SÁCH</span><h2>{{ categories|length }} thể loại</h2></div></div>
+    <div class="category-list">{% for category in categories %}<div>
+      <span><strong>{{ category.name }}</strong><small>{{ category.description or 'Chưa có mô tả' }} • {{ category.books.count() }} sách</small></span>
+      <span class="table-actions">
+        <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.category_edit', category_id=category.id) }}">Sửa</a>
+        <form method="post" action="{{ url_for('admin.category_delete', category_id=category.id) }}" onsubmit="return confirm('Xóa thể loại này?')"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-danger-ghost btn-sm" {{ 'disabled' if category.books.count() }}>Xóa</button></form>
+      </span>
+    </div>{% else %}<div class="empty-cell">Chưa có thể loại.</div>{% endfor %}</div>
+  </div>
+</section>
+{% endblock %}

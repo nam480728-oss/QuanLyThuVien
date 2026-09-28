@@ -1,0 +1,31 @@
+{% macro status_badge(status) -%}
+    {% set labels = {'pending':'Chờ duyệt','borrowed':'Đang mượn','overdue':'Quá hạn','returned':'Đã trả','rejected':'Từ chối'} %}
+    <span class="badge badge-{{ status }}">{{ labels.get(status, status) }}</span>
+{%- endmacro %}
+
+{% macro pagination(pager, endpoint, params={}) -%}
+    {% if pager.pages > 1 %}
+    <nav class="pagination" aria-label="Phân trang">
+        {% if pager.has_prev %}<a href="{{ url_for(endpoint, page=pager.prev_num, **params) }}">←</a>{% endif %}
+        {% for page in pager.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+            {% if page %}<a class="{{ 'active' if page == pager.page }}" href="{{ url_for(endpoint, page=page, **params) }}">{{ page }}</a>{% else %}<span>…</span>{% endif %}
+        {% endfor %}
+        {% if pager.has_next %}<a href="{{ url_for(endpoint, page=pager.next_num, **params) }}">→</a>{% endif %}
+    </nav>
+    {% endif %}
+{%- endmacro %}
+
+{% macro book_card(book) -%}
+<article class="book-card">
+    <a class="book-cover" href="{{ url_for('public.book_detail', book_id=book.id) }}">
+        {% if book.cover_url %}<img src="{{ book.cover_url }}" alt="Bìa {{ book.title }}">{% else %}<span class="cover-placeholder"><b>{{ book.title[:1] }}</b><small>LIBRAHUB</small></span>{% endif %}
+        <span class="availability {{ 'in-stock' if book.is_available else 'out-stock' }}">{{ 'Còn sách' if book.is_available else 'Đang hết' }}</span>
+    </a>
+    <div class="book-card-body">
+        <span class="eyebrow">{{ book.category.name if book.category else 'Chưa phân loại' }}</span>
+        <h3><a href="{{ url_for('public.book_detail', book_id=book.id) }}">{{ book.title }}</a></h3>
+        <p>{{ book.author_names }}</p>
+        <div class="book-meta"><span>ISBN {{ book.isbn }}</span><span>{{ book.available_copies }}/{{ book.total_copies }} bản</span></div>
+    </div>
+</article>
+{%- endmacro %}

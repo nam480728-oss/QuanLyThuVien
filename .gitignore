@@ -1,0 +1,13 @@
+.env
+.mysql/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+app/static/uploads/*
+!app/static/uploads/.gitkeep
+.idea/
+.vscode/

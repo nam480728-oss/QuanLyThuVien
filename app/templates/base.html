@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="LibraHub - Hệ thống quản lý thư viện hiện đại">
+    <title>{% block title %}LibraHub{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="{{ url_for('public.home') }}" aria-label="Trang chủ LibraHub">
+            <span class="brand-mark">L</span><span>LibraHub</span>
+        </a>
+        <nav class="main-nav" aria-label="Điều hướng chính">
+            <a href="{{ url_for('public.home') }}">Trang chủ</a>
+            <a href="{{ url_for('public.catalog') }}">Kho sách</a>
+            {% if current_user.is_authenticated and current_user.role == 'reader' %}
+                <a href="{{ url_for('reader.dashboard') }}">Tủ sách của tôi</a>
+                <a href="{{ url_for('reader.loans') }}">Phiếu mượn</a>
+            {% elif current_user.is_authenticated and current_user.role in ['librarian', 'admin'] %}
+                <a href="{{ url_for('librarian.dashboard') }}">Nghiệp vụ</a>
+                <a href="{{ url_for('librarian.books') }}">Quản lý sách</a>
+                <a href="{{ url_for('librarian.loans') }}">Mượn trả</a>
+                {% if current_user.role == 'admin' %}<a href="{{ url_for('admin.dashboard') }}">Quản trị</a>{% endif %}
+            {% endif %}
+        </nav>
+        <div class="header-actions">
+            {% if current_user.is_authenticated %}
+                <span class="user-pill"><span class="avatar">{{ current_user.full_name[0]|upper }}</span>{{ current_user.full_name }}</span>
+                {% if current_user.role == 'reader' %}<a class="icon-link" href="{{ url_for('reader.profile') }}" aria-label="Hồ sơ">⚙</a>{% endif %}
+                <form method="post" action="{{ url_for('auth.logout') }}" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="btn btn-ghost btn-sm" type="submit">Đăng xuất</button>
+                </form>
+            {% else %}
+                <a class="btn btn-ghost btn-sm" href="{{ url_for('auth.login') }}">Đăng nhập</a>
+                <a class="btn btn-primary btn-sm" href="{{ url_for('auth.register') }}">Tạo tài khoản</a>
+            {% endif %}
+        </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-stack" role="status">
+            {% for category, message in messages %}<div class="flash flash-{{ category }}">{{ message }}</div>{% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+
+    <main>{% block content %}{% endblock %}</main>
+
+    <footer class="site-footer">
+        <div><a class="brand footer-brand" href="{{ url_for('public.home') }}"><span class="brand-mark">L</span><span>LibraHub</span></a><p>Không gian tri thức, kết nối cộng đồng.</p></div>
+        <div><strong>Khám phá</strong><a href="{{ url_for('public.catalog') }}">Danh mục sách</a><a href="{{ url_for('auth.register') }}">Đăng ký thành viên</a></div>
+        <div><strong>Liên hệ</strong><span>thuvienso@librahub.vn</span><span>028 7300 6868</span></div>
+        <div class="footer-copy">© 2026 LibraHub</div>
+    </footer>
+</body>
+</html>

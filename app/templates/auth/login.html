@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}Đăng nhập — LibraHub{% endblock %}
+{% block content %}
+<section class="auth-shell"><div class="auth-art"><span class="section-kicker light">CHÀO MỪNG TRỞ LẠI</span><h1>Tiếp tục hành trình<br>tri thức của bạn.</h1><blockquote>“Đọc sách là cuộc trò chuyện với những người xuất sắc nhất của các thế kỷ đã qua.”</blockquote></div><div class="auth-panel"><form method="post" class="auth-form"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><span class="section-kicker">TÀI KHOẢN</span><h2>Đăng nhập</h2><p>Chưa có tài khoản? <a href="{{ url_for('auth.register') }}">Đăng ký miễn phí</a></p><label>Email<input type="email" name="email" required autocomplete="email" placeholder="ban@example.com"></label><label>Mật khẩu<input type="password" name="password" required autocomplete="current-password" placeholder="Tối thiểu 8 ký tự"></label><label class="checkbox"><input type="checkbox" name="remember"> Ghi nhớ đăng nhập</label><button class="btn btn-primary btn-block" type="submit">Đăng nhập →</button></form></div></section>
+{% endblock %}

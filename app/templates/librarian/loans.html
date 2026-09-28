@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import status_badge, pagination %}
+{% block title %}Quản lý mượn trả — LibraHub{% endblock %}
+{% block content %}
+<section class="page-hero compact admin-hero">
+  <div class="container"><span class="section-kicker light">LƯU THÔNG TÀI LIỆU</span><h1>Quản lý mượn — trả</h1><p>Duyệt yêu cầu, nhận trả và theo dõi quá hạn.</p></div>
+</section>
+<section class="container section">
+  <div class="tabs">
+    <a class="{{ 'active' if not selected_status }}" href="{{ url_for('librarian.loans') }}">Tất cả</a>
+    {% for value,label in [('pending','Chờ duyệt'),('borrowed','Đang mượn'),('overdue','Quá hạn'),('returned','Đã trả'),('rejected','Từ chối')] %}
+      <a class="{{ 'active' if selected_status == value }}" href="{{ url_for('librarian.loans', status=value) }}">{{ label }}</a>
+    {% endfor %}
+  </div>
+  <div class="panel"><div class="table-wrap"><table>
+    <thead><tr><th>Mã</th><th>Độc giả</th><th>Sách</th><th>Ngày yêu cầu</th><th>Hạn trả</th><th>Trạng thái</th><th>Phạt</th><th>Thao tác</th></tr></thead>
+    <tbody>{% for loan in loans.items %}<tr>
+      <td>#{{ '%05d'|format(loan.id) }}</td>
+      <td><strong>{{ loan.user.full_name }}</strong><small>{{ loan.user.email }}</small></td>
+      <td><strong>{{ loan.book.title }}</strong><small>{{ loan.book.isbn }}</small></td>
+      <td>{{ loan.requested_at.strftime('%d/%m/%Y') }}</td>
+      <td>{{ loan.due_at.strftime('%d/%m/%Y') if loan.due_at else '—' }}</td>
+      <td>{{ status_badge(loan.status) }}</td>
+      <td>{{ loan.fine_amount|currency }}{% if loan.fine_paid and loan.fine_amount %}<small>Đã thu</small>{% endif %}</td>
+      <td class="table-actions">
+        {% if loan.status == 'pending' %}
+          <form method="post" action="{{ url_for('librarian.loan_approve', loan_id=loan.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-success btn-sm">Duyệt</button></form>
+          <form method="post" action="{{ url_for('librarian.loan_reject', loan_id=loan.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-danger-ghost btn-sm">Từ chối</button></form>
+        {% elif loan.status in ['borrowed','overdue'] %}
+          <form method="post" action="{{ url_for('librarian.loan_return', loan_id=loan.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-success btn-sm">Nhận trả</button></form>
+        {% elif loan.status == 'returned' and loan.fine_amount > 0 and not loan.fine_paid %}
+          <form method="post" action="{{ url_for('librarian.loan_pay_fine', loan_id=loan.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-success btn-sm">Thu phạt</button></form>
+        {% else %}—{% endif %}
+      </td>
+    </tr>{% else %}<tr><td colspan="8" class="empty-cell">Không có phiếu trong nhóm này.</td></tr>{% endfor %}</tbody>
+  </table></div></div>
+  {{ pagination(loans, 'librarian.loans', {'status': selected_status}) }}
+</section>
+{% endblock %}
