@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="vi" class="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LibAdmin - Chi tiết Sách</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: #f8fafc; color: #191c1e; }
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal; font-size: 24px;
+    line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block; white-space: nowrap;
+    word-wrap: normal; direction: ltr; -webkit-font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle;
+  }
+  .material-symbols-outlined.icon-filled { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .font-mono-sm { font-family: 'JetBrains Mono', monospace; }
+  .shadow-2xs { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.04); }
+  .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  #summary-text.clamped { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+</style>
+</head>
+<body class="bg-[#f7f9fb] text-[#191c1e] font-sans antialiased">
+
+<div class="p-4 md:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
+  <!-- Breadcrumb and Top Actions -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-4">
+    <div class="flex items-center gap-2 text-xs md:text-sm text-slate-500">
+      <button id="btn-back" class="hover:text-blue-600 flex items-center gap-1 transition-colors">
+        <span class="material-symbols-outlined text-base">arrow_back</span>
+        <span>Danh mục</span>
+      </button>
+      <span>/</span>
+      <span class="text-slate-400">Thiết kế UI/UX</span>
+      <span>/</span>
+      <span class="text-slate-900 font-semibold truncate max-w-xs">Thiết kế Giao diện Hiện đại: Từ Nguyên lý đến Thực tiễn</span>
+    </div>
+
+    <div class="flex items-center gap-2 flex-wrap">
+      <button id="btn-edit-book-detail" class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors shadow-2xs">
+        <span class="material-symbols-outlined text-base text-amber-600">edit</span>
+        <span>Chỉnh sửa thông tin</span>
+      </button>
+      <button id="btn-share" class="p-1.5 text-slate-500 bg-white border border-slate-300 rounded-lg hover:bg-slate-50" title="Chia sẻ">
+        <span class="material-symbols-outlined text-lg">share</span>
+      </button>
+      <button id="btn-bookmark" class="p-1.5 text-slate-500 bg-white border border-slate-300 rounded-lg hover:bg-slate-50" title="Thêm vào yêu thích">
+        <span class="material-symbols-outlined text-lg">bookmark</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content: Two Columns -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <!-- Left Column -->
+    <div class="lg:col-span-4 space-y-6">
+      <!-- Cover & Badge Card -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs flex flex-col items-center">
+        <div class="relative w-56 h-80 rounded-xl overflow-hidden shadow-lg border border-slate-200 group">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFUqJjuaXSa_LoqI3VfK7RnYocqwKMYbFQ9HlPDzWUs_0kRxwO9pDLB5Et65hw3W7qkBxY_luq4pJ7H-1BQCoAim61oEg4byPAMUpXN3FMz7YTmoYM1I_vieY3B9UKskq9OixUBrvOLc58bx_MSY1VAs5i393ni6PQ5DHAzKMCKQJIxNX8FFZawxQSnnWSCryBEBI8KOh4RxqaX3uV3DFhfqjsBJ7xp7sA6DZigZuoxDorg3J6CczTGA"
+            alt="Thiết kế Giao diện Hiện đại" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" referrerpolicy="no-referrer" />
+          <div class="absolute top-3 right-3 bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-md flex items-center gap-1 backdrop-blur-xs">
+            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+            <span>Còn 3 cuốn trên kệ</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="w-full mt-6 space-y-2.5">
+          <button id="btn-borrow-book" class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl shadow-md shadow-blue-600/25 flex items-center justify-center gap-2 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-xl">assignment_add</span>
+            <span>Mượn sách ngay</span>
+          </button>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button id="btn-reserve-book" class="py-2.5 px-3 border rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors bg-white text-slate-700 border-slate-300 hover:bg-slate-50">
+              <span id="reserve-icon" class="material-symbols-outlined text-base">bookmark_add</span>
+              <span id="reserve-label">Đặt chỗ trước</span>
+            </button>
+            <button id="btn-read-online" class="py-2.5 px-3 bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors">
+              <span class="material-symbols-outlined text-base">menu_book</span>
+              <span>Đọc trực tuyến</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Storage Location Card -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-blue-600 text-base">pin_drop</span>
+            Vị trí lưu trữ
+          </span>
+          <button id="btn-copy-location" class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-0.5">
+            <span id="location-copy-icon" class="material-symbols-outlined text-xs">content_copy</span>
+            <span id="location-copy-label">Sao chép</span>
+          </button>
+        </div>
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-xl">shelves</span>
+          </div>
+          <div>
+            <p id="location-text" class="text-sm font-bold text-slate-900">Tầng 2, Khu Vực Công Nghệ, Kệ: IT-04, Ngăn: 2A</p>
+            <p class="text-xs text-slate-500 mt-0.5">Sách lưu tại kho mở • Độc giả có thể tự lấy đọc tại chỗ</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="lg:col-span-8 space-y-6">
+      <!-- Main Info Card -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-5">
+        <!-- Tags -->
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">#Thiết kế UI/UX</span>
+          <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">#ThiếtKếUI</span>
+          <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">#DesignSystem</span>
+        </div>
+
+        <!-- Title & Author -->
+        <div>
+          <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
+            Thiết kế Giao diện Hiện đại: Từ Nguyên lý đến Thực tiễn
+          </h1>
+          <p class="text-base text-slate-600 font-medium mt-1">Phương pháp và Thực hành Hiệu quả</p>
+          <div class="flex items-center gap-4 mt-3 text-xs md:text-sm text-slate-600 flex-wrap">
+            <span>Tác giả: <strong class="text-slate-900">TS. Nguyễn Văn A</strong>, Trần B</span>
+            <span>•</span>
+            <span>Năm xuất bản: <strong class="text-slate-900">2023</strong></span>
+          </div>
+        </div>
+
+        <!-- Rating -->
+        <div class="flex items-center gap-3 py-3 border-y border-slate-100">
+          <div class="flex items-center text-amber-500">
+            <span class="material-symbols-outlined icon-filled text-lg">star</span>
+            <span class="material-symbols-outlined icon-filled text-lg">star</span>
+            <span class="material-symbols-outlined icon-filled text-lg">star</span>
+            <span class="material-symbols-outlined icon-filled text-lg">star</span>
+            <span class="material-symbols-outlined icon-filled text-lg">star</span>
+          </div>
+          <span class="font-bold text-slate-900 text-sm">4.8 / 5.0</span>
+          <span class="text-xs text-slate-400">(124 đánh giá từ độc giả)</span>
+        </div>
+
+        <!-- Metadata Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-slate-50/70 rounded-xl border border-slate-200/80">
+          <div>
+            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Nhà xuất bản</span>
+            <span class="text-xs sm:text-sm font-bold text-slate-800 mt-0.5 block truncate">NXB Công nghệ</span>
+          </div>
+          <div>
+            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Ngôn ngữ</span>
+            <span class="text-xs sm:text-sm font-bold text-slate-800 mt-0.5 block">Tiếng Việt</span>
+          </div>
+          <div>
+            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Định dạng</span>
+            <span class="text-xs sm:text-sm font-bold text-slate-800 mt-0.5 block">Hardcover</span>
+          </div>
+          <div>
+            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">ISBN-13</span>
+            <span class="text-xs sm:text-sm font-bold text-slate-800 mt-0.5 block font-mono-sm truncate">978-604-1-12345</span>
+          </div>
+        </div>
+
+        <!-- Summary description -->
+        <div class="space-y-2">
+          <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wide">Tóm tắt nội dung</h3>
+          <div id="summary-text" class="clamped text-sm text-slate-600 leading-relaxed whitespace-pre-line">Cuốn sách cung cấp một cái nhìn toàn diện về quy trình thiết kế giao diện người dùng (UI) hiện đại, tập trung vào việc áp dụng các nguyên lý thiết kế tối giản, hệ thống lưới (grid systems), và lý thuyết màu sắc trong bối cảnh các ứng dụng doanh nghiệp có mật độ dữ liệu cao.
+
+Thông qua các ví dụ thực tiễn và phân tích case study, tác giả hướng dẫn cách xây dựng một Design System hiệu quả, quản lý Design Tokens, và cách chuyển giao thiết kế từ Figma sang mã nguồn front-end (đặc biệt nhấn mạnh vào Tailwind CSS). Đây là tài liệu thiết yếu cho các nhà thiết kế, lập trình viên và nhà quản lý sản phẩm.</div>
+          <button id="btn-toggle-summary" class="text-xs text-blue-600 hover:text-blue-800 font-semibold cursor-pointer">Đọc thêm chi tiết...</button>
+        </div>
+      </div>
+
+      <!-- Similar Books Section -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
+        <h3 class="text-base font-bold text-slate-900">Tài liệu tương tự</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="similar-books"></div>
+      </div>
+
+      <!-- Reviews Section -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-5">
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-bold text-slate-900">Đánh giá từ độc giả (<span id="review-count">2</span>)</h3>
+          <button id="btn-write-review" class="text-xs font-semibold px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg transition-colors flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">rate_review</span>
+            <span id="write-review-label">Viết đánh giá</span>
+          </button>
+        </div>
+
+        <!-- Add Review Form -->
+        <form id="review-form" class="hidden p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="text-xs font-semibold text-slate-700 block mb-1">Tên độc giả</label>
+              <input type="text" id="reviewer-name" placeholder="Nhập tên của bạn..." class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs" />
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-slate-700 block mb-1">Điểm đánh giá (1-5 sao)</label>
+              <div class="flex items-center gap-1 text-amber-500 py-1" id="rating-stars">
+                <button type="button" data-star="1" class="rate-star hover:scale-110 transition-transform"><span class="material-symbols-outlined text-xl icon-filled">star</span></button>
+                <button type="button" data-star="2" class="rate-star hover:scale-110 transition-transform"><span class="material-symbols-outlined text-xl icon-filled">star</span></button>
+                <button type="button" data-star="3" class="rate-star hover:scale-110 transition-transform"><span class="material-symbols-outlined text-xl icon-filled">star</span></button>
+                <button type="button" data-star="4" class="rate-star hover:scale-110 transition-transform"><span class="material-symbols-outlined text-xl icon-filled">star</span></button>
+                <button type="button" data-star="5" class="rate-star hover:scale-110 transition-transform"><span class="material-symbols-outlined text-xl icon-filled">star</span></button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-slate-700 block mb-1">Nhận xét của bạn</label>
+            <textarea rows="3" id="review-text" required placeholder="Chia sẻ cảm nghĩ về nội dung, tính ứng dụng của cuốn sách..." class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs"></textarea>
+          </div>
+          <div class="flex justify-end gap-2">
+            <button type="button" id="btn-cancel-review" class="px-3 py-1 text-xs text-slate-600 hover:bg-slate-200 rounded">Hủy</button>
+            <button type="submit" class="px-4 py-1 text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 rounded shadow-2xs">Gửi đánh giá</button>
+          </div>
+        </form>
+
+        <!-- Reviews List -->
+        <div class="space-y-3" id="reviews-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const SIMILAR_BOOKS = [
+    { id:'sim-1', title:'Xây dựng Design System', author:'Nguyễn Hải Nam', status:'available', coverUrl:'https://lh3.googleusercontent.com/aida-public/AB6AXuDS63d6ZecNkHBxPc5S4o-Agltf8SfCFS-ZPBfH55JSb6eqqXzEV5_RjstCgTeOvz-E6ZZ5TFr4nmYxF3yFFozUprEX1psIsS_uUBlqU-bEcZDAIH5SiO-f6A6q-UEhadpj6Bz32hNS2tVpwE_E6QTIBH9KwXem6TjekCWiLHthIFegZM5wAFQ23RoGZKJyOHlw8ZmmJEx3UGrLkU9aqY7uCP2VcW8O-46g3wrc7IKrwhn_yX4EL3jSyA' },
+    { id:'sim-2', title:'Trải nghiệm Người dùng (UX) Cơ bản', author:'Phạm Minh Long', status:'available', coverUrl:'https://lh3.googleusercontent.com/aida-public/AB6AXuCJ03ONB49o63mTSNifozvCnUhZbWOrvdGBvXb5a0JGkP-ATpYWEZ1i9hngwHJSmoqklUojRY-dx3CoDg_54SPYXs5QmJruO9AV5Sw-4PRsb8ArT3Pb1r_VdsFSxBTQJ7hLxjpvXuisotmt_pm9KnCwf5qrNbT-snMbzsRNA-Wz3wAfx9PB-D-J3YVgQAu_HxGLLGQaH5WD0iemiNk0bWQrA55WyVMivVV4o33wH5DCFwhdwWAuIPeqaA' },
+    { id:'sim-3', title:'Tailwind CSS Thực chiến', author:'Vũ Đức Trọng', status:'borrowed_out', coverUrl:'https://lh3.googleusercontent.com/aida-public/AB6AXuD1hvU9nDcQ4vVoNvZlq9rU8VRCPC2nQissGOljIPyM9NNgeTSdul3uwUEpj8U6aatq7LujOYNfIt_CqWDdKvfMyAM-g3ta-fiC8tPBN8lim_H_4C7fexo2BABj1nGTTm3OMwz3Sx0NBMGd951QWiljc3aW_5tp7YTesVbADRCqGZvBIoHsA4Zfay9R0BONE36NOBNaru4v0oEZi2k46EtikUBsYz4lN8o6jEiuj5du8hQmJrZa-oawOg' },
+  ];
+
+  let reviews = [
+    { id:'rev-1', userName:'Lê Minh Châu', avatarInitial:'LM', rating:5, date:'2 ngày trước', content:'Sách rất hay, đặc biệt phần hướng dẫn về Design Tokens được trình bày rất logic và dễ áp dụng cho dự án thực tế.' },
+    { id:'rev-2', userName:'Hoàng Tuấn', avatarInitial:'HT', rating:4, date:'1 tuần trước', content:'Nội dung phong phú, nhưng giấy in hơi mỏng. Nội dung kỹ thuật thì tuyệt vời.' },
+  ];
+
+  let isExpandedSummary = false;
+  let isReserved = false;
+  let copiedLocation = false;
+  let newRating = 5;
+
+  function renderSimilar() {
+    document.getElementById('similar-books').innerHTML = SIMILAR_BOOKS.map(sim => `
+      <div class="p-3 rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-xs transition-all cursor-pointer bg-slate-50/50 flex gap-3" data-sim="${sim.title}">
+        <div class="w-14 h-20 rounded bg-slate-200 overflow-hidden shrink-0">
+          <img src="${sim.coverUrl}" alt="${sim.title}" class="w-full h-full object-cover" referrerpolicy="no-referrer" />
+        </div>
+        <div class="flex flex-col justify-between min-w-0">
+          <div>
+            <h4 class="text-xs font-bold text-slate-900 line-clamp-2">${sim.title}</h4>
+            <p class="text-[11px] text-slate-500 mt-0.5">${sim.author}</p>
+          </div>
+          <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded w-fit">
+            ${sim.status === 'available' ? 'Có sẵn' : 'Đang mượn'}
+          </span>
+        </div>
+      </div>`).join('');
+    document.querySelectorAll('[data-sim]').forEach(el => {
+      el.addEventListener('click', () => alert('Xem tài liệu tương tự: ' + el.dataset.sim));
+    });
+  }
+
+  function renderReviews() {
+    document.getElementById('review-count').textContent = reviews.length;
+    document.getElementById('reviews-list').innerHTML = reviews.map(rev => `
+      <div class="p-4 rounded-xl border border-slate-100 bg-slate-50/40 space-y-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shadow-xs">${rev.avatarInitial}</div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-900">${rev.userName}</h4>
+              <span class="text-[10px] text-slate-400">${rev.date}</span>
+            </div>
+          </div>
+          <div class="flex items-center text-amber-500">
+            ${Array.from({length: rev.rating}).map(() => '<span class="material-symbols-outlined icon-filled text-sm">star</span>').join('')}
+          </div>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed pl-10">${rev.content}</p>
+      </div>`).join('');
+  }
+
+  document.getElementById('btn-back').addEventListener('click', () => alert('Quay lại Danh mục (demo)'));
+  document.getElementById('btn-edit-book-detail').addEventListener('click', () => alert('Chỉnh sửa thông tin sách (demo)'));
+  document.getElementById('btn-share').addEventListener('click', () => alert('Đã sao chép liên kết tài liệu: Thiết kế Giao diện Hiện đại'));
+  document.getElementById('btn-bookmark').addEventListener('click', () => alert('Đã thêm cuốn sách vào danh mục ưa thích của bạn.'));
+  document.getElementById('btn-borrow-book').addEventListener('click', () => alert('Mượn sách ngay (demo)'));
+  document.getElementById('btn-read-online').addEventListener('click', () => alert('Đọc trực tuyến (demo)'));
+
+  document.getElementById('btn-reserve-book').addEventListener('click', (e) => {
+    isReserved = !isReserved;
+    const btn = e.currentTarget;
+    const icon = document.getElementById('reserve-icon');
+    const label = document.getElementById('reserve-label');
+    if (isReserved) {
+      btn.className = 'py-2.5 px-3 border rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors bg-amber-50 text-amber-800 border-amber-300';
+      icon.textContent = 'check_circle';
+      label.textContent = 'Đã đặt chỗ';
+      alert('Đặt chỗ trước thành công! Bạn có 24h để nhận sách tại quầy.');
+    } else {
+      btn.className = 'py-2.5 px-3 border rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors bg-white text-slate-700 border-slate-300 hover:bg-slate-50';
+      icon.textContent = 'bookmark_add';
+      label.textContent = 'Đặt chỗ trước';
+      alert('Đã hủy đặt chỗ');
+    }
+  });
+
+  document.getElementById('btn-copy-location').addEventListener('click', () => {
+    const text = document.getElementById('location-text').textContent;
+    navigator.clipboard && navigator.clipboard.writeText(text);
+    copiedLocation = true;
+    document.getElementById('location-copy-icon').textContent = 'check';
+    document.getElementById('location-copy-label').textContent = 'Đã chép';
+    setTimeout(() => {
+      copiedLocation = false;
+      document.getElementById('location-copy-icon').textContent = 'content_copy';
+      document.getElementById('location-copy-label').textContent = 'Sao chép';
+    }, 2000);
+  });
+
+  document.getElementById('btn-toggle-summary').addEventListener('click', (e) => {
+    isExpandedSummary = !isExpandedSummary;
+    document.getElementById('summary-text').classList.toggle('clamped', !isExpandedSummary);
+    e.target.textContent = isExpandedSummary ? 'Thu gọn lại' : 'Đọc thêm chi tiết...';
+  });
+
+  document.getElementById('btn-write-review').addEventListener('click', () => {
+    const form = document.getElementById('review-form');
+    const label = document.getElementById('write-review-label');
+    const isHidden = form.classList.contains('hidden');
+    form.classList.toggle('hidden');
+    label.textContent = isHidden ? 'Đóng biểu mẫu' : 'Viết đánh giá';
+  });
+
+  document.getElementById('btn-cancel-review').addEventListener('click', () => {
+    document.getElementById('review-form').classList.add('hidden');
+    document.getElementById('write-review-label').textContent = 'Viết đánh giá';
+  });
+
+  document.querySelectorAll('.rate-star').forEach(btn => {
+    btn.addEventListener('click', () => {
+      newRating = Number(btn.dataset.star);
+      document.querySelectorAll('.rate-star span').forEach((span, i) => {
+        span.classList.toggle('icon-filled', i < newRating);
+      });
+    });
+  });
+
+  document.getElementById('review-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = document.getElementById('review-text').value.trim();
+    if (!text) return;
+    const name = document.getElementById('reviewer-name').value.trim() || 'Độc giả ẩn danh';
+    reviews = [{
+      id: 'rev-' + Date.now(),
+      userName: name,
+      avatarInitial: name.slice(0, 2).toUpperCase(),
+      rating: newRating,
+      date: 'Vừa xong',
+      content: text
+    }, ...reviews];
+    renderReviews();
+    document.getElementById('review-text').value = '';
+    document.getElementById('review-form').classList.add('hidden');
+    document.getElementById('write-review-label').textContent = 'Viết đánh giá';
+  });
+
+  renderSimilar();
+  renderReviews();
+</script>
+</body>
+</html>

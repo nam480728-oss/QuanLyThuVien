@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="vi" class="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LibAdmin - Quản lý Danh mục Sách</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --primary: #091426;
+    --primary-container: #1e293b;
+    --secondary: #00668a;
+    --secondary-container: #40c2fd;
+    --surface: #f7f9fb;
+    --surface-container-low: #f2f4f6;
+    --surface-container: #eceef0;
+    --surface-container-high: #e6e8ea;
+    --surface-container-highest: #e0e3e5;
+    --surface-container-lowest: #ffffff;
+    --outline: #75777d;
+    --outline-variant: #c5c6cd;
+  }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #f8fafc;
+    color: #191c1e;
+  }
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+  }
+  .material-symbols-outlined.icon-filled { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .font-mono-sm { font-family: 'JetBrains Mono', monospace; }
+  .shadow-2xs { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.04); }
+  .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+</style>
+</head>
+<body class="bg-[#f7f9fb] text-[#191c1e] font-sans antialiased">
+
+<div class="p-4 md:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
+  <!-- Top Header & Actions -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Quản lý Danh mục Sách</h2>
+      <p class="text-sm text-slate-500 mt-0.5">
+        Quản lý toàn bộ ấn phẩm sách giấy và tài liệu số trong hệ thống thư viện.
+      </p>
+    </div>
+    <div class="flex items-center gap-2.5 flex-wrap">
+      <button id="btn-add-digital-book" class="flex items-center gap-2 px-3.5 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 shadow-2xs transition-colors">
+        <span class="material-symbols-outlined text-lg text-blue-600">upload_file</span>
+        <span>Thêm tài liệu số</span>
+      </button>
+      <button id="btn-add-physical-book" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm shadow-blue-600/20 transition-colors">
+        <span class="material-symbols-outlined text-lg">add</span>
+        <span>Thêm đầu sách mới</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter and Search Bar -->
+  <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+      <!-- Main Search -->
+      <div class="md:col-span-2 relative">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+        <input id="catalog-search-input" type="text" placeholder="Tìm theo Tiêu đề, ISBN, hoặc Tác giả..."
+          class="w-full pl-9 pr-3 py-2 bg-slate-50/50 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
+      </div>
+
+      <!-- Thể loại -->
+      <div>
+        <select id="filter-category" class="w-full px-3 py-2 bg-slate-50/50 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+          <option value="all">Thể loại: Tất cả</option>
+          <option value="Khoa học máy tính">Khoa học máy tính</option>
+          <option value="Phần mềm">Phần mềm</option>
+          <option value="Thiết kế UI/UX">Thiết kế UI/UX</option>
+          <option value="Dữ liệu">Dữ liệu</option>
+          <option value="Tâm lý & Kỹ năng">Tâm lý & Kỹ năng</option>
+        </select>
+      </div>
+
+      <!-- Loại tài liệu -->
+      <div>
+        <select id="filter-type" class="w-full px-3 py-2 bg-slate-50/50 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+          <option value="all">Loại: Tất cả</option>
+          <option value="physical">Sách giấy</option>
+          <option value="digital">Tài liệu số</option>
+        </select>
+      </div>
+
+      <!-- Trạng thái -->
+      <div>
+        <select id="filter-status" class="w-full px-3 py-2 bg-slate-50/50 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+          <option value="all">Trạng thái: Tất cả</option>
+          <option value="available">Sẵn sàng</option>
+          <option value="borrowed">Đang mượn</option>
+          <option value="lost">Mất</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Quick Filter Tags / Active Filter Count -->
+    <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs text-slate-500">
+      <div>Tìm thấy <span id="result-count" class="font-semibold text-slate-900">8</span> đầu sách phù hợp</div>
+      <button id="btn-clear-filters" class="hidden text-blue-600 hover:text-blue-800 font-medium items-center gap-1 cursor-pointer">
+        <span class="material-symbols-outlined text-sm">refresh</span>
+        Xóa bộ lọc
+      </button>
+    </div>
+  </div>
+
+  <!-- Books Table -->
+  <div class="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+    <div class="overflow-x-auto">
+      <table id="books-catalog-table" class="w-full text-left text-sm text-slate-600">
+        <thead class="bg-slate-50/80 text-[11px] font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">
+          <tr>
+            <th class="py-3 px-4">ISBN / MÃ</th>
+            <th class="py-3 px-4">TIÊU ĐỀ</th>
+            <th class="py-3 px-4">TÁC GIẢ</th>
+            <th class="py-3 px-4">LOẠI</th>
+            <th class="py-3 px-4">THỂ LOẠI</th>
+            <th class="py-3 px-4">TRẠNG THÁI</th>
+            <th class="py-3 px-4 text-right">THAO TÁC</th>
+          </tr>
+        </thead>
+        <tbody id="catalog-tbody" class="divide-y divide-slate-100 font-normal"></tbody>
+      </table>
+    </div>
+
+    <!-- Pagination Footer -->
+    <div class="px-4 py-3 border-t border-slate-200 bg-slate-50/50 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+      <div>
+        Hiển thị <span class="font-semibold text-slate-900">1 - <span id="showing-count">8</span></span> trong số <span class="font-semibold text-slate-900">2,450</span> kết quả
+      </div>
+      <div class="flex items-center gap-1">
+        <button class="px-2.5 py-1 rounded border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>Trước</button>
+        <button class="px-2.5 py-1 rounded bg-blue-600 text-white font-semibold">1</button>
+        <button class="px-2.5 py-1 rounded border border-slate-200 bg-white hover:bg-slate-50">2</button>
+        <button class="px-2.5 py-1 rounded border border-slate-200 bg-white hover:bg-slate-50">3</button>
+        <span class="px-1 text-slate-400">...</span>
+        <button class="px-2.5 py-1 rounded border border-slate-200 bg-white hover:bg-slate-50">250</button>
+        <button class="px-2.5 py-1 rounded border border-slate-200 bg-white hover:bg-slate-50">Sau</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const BOOKS = [
+    { id:'book-1', isbn:'978-0134685991', title:'Effective Java (3rd Edition)', author:'Joshua Bloch', category:'Khoa học máy tính', type:'physical', format:'Paperback', status:'available', publisher:'Addison-Wesley Professional', publishYear:2018, coverUrl:'https://lh3.googleusercontent.com/aida-public/AB6AXuBnd7lP47_SikX7W4HItGeJRiJLoSy47xwLOFkHhaErvhCvoIKdqwOF_JAtuTgC3Mafn1err6oSRAsBivsSqdtdcQFuR6nAUaOLI8JJ-tfJayWJyRfgqmFQYiCPlZOGl6WFUxaKWFUudmBVOjSTbGcVBHw3sfsuc9rJ1WEZW3wTskfNf71ujwCzYnzVsCsDh3u1bZ5dRJfkGiUEj-7i14EMzcqdLrlCZ8o9CPm9j48AweIyLsq7kdCDZw' },
+    { id:'book-2', isbn:'978-0201616224', title:'The Pragmatic Programmer', author:'Andrew Hunt', category:'Khoa học máy tính', type:'physical', format:'Paperback', status:'borrowed', publisher:'Addison-Wesley', publishYear:2019, coverUrl:'https://lh3.googleusercontent.com/aida-public/AB6AXuAb-z8roJqYJtVkSO4Q0hEaSxMpau9iQxxVUQqu2611GUFA_KebE6vraMH5kcuFcH38hzK385TgOI7-ZJJiVh367XVcIqIL0iHW8ECSYsgjnhgwmfwJljc0QzeBYi1Ex_8yJkAXA5-WcfXExbcf46TSp88zd1HuQu8TgVbf_-hnqGgcCjcHw2zvrOu5PMU1c8te342LuWSXx2P4dsR9LhXO5hBJs45p5ndjrmQHRO3bEAz7CTfbInQ0gw' },
+    { id:'book-3', isbn:'DIG-2023-001', title:'Clean Architecture', author:'Robert C. Martin', category:'Phần mềm', type:'digital', format:'PDF', status:'available', publisher:'Prentice Hall', publishYear:2017, coverUrl:'https://lh3.googleusercontent.com/aida-public/AB6AXuBFUqJjuaXSa_LoqI3VfK7RnYocqwKMYbFQ9HlPDzWUs_0kRxwO9pDLB5Et65hw3W7qkBxY_luq4pJ7H-1BQCoAim61oEg4byPAMUpXN3FMz7YTmoYM1I_vieY3B9UKskq9OixUBrvOLc58bx_MSY1VAs5i393ni6PQ5DHAzKMCKQJIxNX8FFZawxQSnnWSCryBEBI8KOh4RxqaX3uV3DFhfqjsBJ7xp7sA6DZigZuoxDorg3J6CczTGA' },
+    { id:'book-4', isbn:'DIG-2023-042', title:'Designing Data-Intensive Applications', author:'Martin Kleppmann', category:'Dữ liệu', type:'digital', format:'EPUB', status:'available', publisher:"O'Reilly Media", publishYear:2021, coverUrl:'https://lh3.googleusercontent.com/aida-public/AB6AXuCndWGDxMm3lpGzatPmRT66P5r-D1dw4Xyz8K5DUnrCQs3MtfhBvl2TgXi3ZMPRzFDc71TdBuW3Qenntp8WvyU9-jeDzUlSD9DzOrFknu8LflTBsn9qVu6acTiDzv8zybYV0w6EAJQ99LS6A6WOrZdimCO2RwquDZRP8pyX0Ds808cHJ3HbyTo124jT_oAdfbC85UyYhR7h_D9ddAxKH9XKDXy0F3q12EoDA7UImQ4UJ1Gh6BbsdZs81Q' },
+    { id:'book-5', isbn:'978-0321356680', title:'Clean Code', author:'Robert C. Martin', category:'Phần mềm', type:'physical', format:'Paperback', status:'lost', publisher:'Prentice Hall', publishYear:2008, coverUrl:'https://lh3.googleusercontent.com/aida-public/AB6AXuAb-z8roJqYJtVkSO4Q0hEaSxMpau9iQxxVUQqu2611GUFA_KebE6vraMH5kcuFcH38hzK385TgOI7-ZJJiVh367XVcIqIL0iHW8ECSYsgjnhgwmfwJljc0QzeBYi1Ex_8yJkAXA5-WcfXExbcf46TSp88zd1HuQu8TgVbf_-hnqGgcCjcHw2zvrOu5PMU1c8te342LuWSXx2P4dsR9LhXO5hBJs45p5ndjrmQHRO3bEAz7CTfbInQ0gw' },
+    { id:'book-6', isbn:'978-604-1-12345', title:'Thiết kế Giao diện Hiện đại: Từ Nguyên lý đến Thực tiễn', author:'TS. Nguyễn Văn A', category:'Thiết kế UI/UX', type:'physical', format:'Hardcover', status:'available', publisher:'NXB Công nghệ', publishYear:2023, coverUrl:'https://lh3.googleusercontent.com/aida-public/AB6AXuBFUqJjuaXSa_LoqI3VfK7RnYocqwKMYbFQ9HlPDzWUs_0kRxwO9pDLB5Et65hw3W7qkBxY_luq4pJ7H-1BQCoAim61oEg4byPAMUpXN3FMz7YTmoYM1I_vieY3B9UKskq9OixUBrvOLc58bx_MSY1VAs5i393ni6PQ5DHAzKMCKQJIxNX8FFZawxQSnnWSCryBEBI8KOh4RxqaX3uV3DFhfqjsBJ7xp7sA6DZigZuoxDorg3J6CczTGA' },
+    { id:'book-7', isbn:'978-604-334-123-4', title:'Nghệ thuật Tư duy Rành mạch', author:'Rolf Dobelli', category:'Tâm lý & Kỹ năng', type:'physical', format:'Paperback', status:'available', publisher:'NXB Thế Giới', publishYear:2023, coverUrl:'https://lh3.googleusercontent.com/aida-public/AB6AXuATgA_7fgu372_9rPeQyFjmj2Oe8SSaUhJjugUsYqY7N4FNNcTqA0b0PUzO8xcAV9riC-Gmg_UxsNsgUGhSbBPm1Ln35bgRlDNKmGLi1ATZDDPsKNA71U2MILE5zbkGopT9pyd4BOnaNhlDDRTtm3udbQUb9hj3qhM_ssyia5AOjaSUI_EFQ6Mrj3mt03u1_C3I-C9htx2gIZykPYsMeZFu8vXjjc6oAdj3G7lmC3P7tA1rk9ye751piA' },
+    { id:'book-8', isbn:'978-0465050659', title:'The Design of Everyday Things', author:'Don Norman', category:'Thiết kế & Tính khả dụng', type:'physical', format:'Paperback', status:'available', publisher:'Basic Books', publishYear:2013, coverUrl:'https://lh3.googleusercontent.com/aida-public/AB6AXuCJ03ONB49o63mTSNifozvCnUhZbWOrvdGBvXb5a0JGkP-ATpYWEZ1i9hngwHJSmoqklUojRY-dx3CoDg_54SPYXs5QmJruO9AV5Sw-4PRsb8ArT3Pb1r_VdsFSxBTQJ7hLxjpvXuisotmt_pm9KnCwf5qrNbT-snMbzsRNA-Wz3wAfx9PB-D-J3YVgQAu_HxGLLGQaH5WD0iemiNk0bWQrA55WyVMivVV4o33wH5DCFwhdwWAuIPeqaA' },
+  ];
+
+  let copiedIsbn = null;
+
+  function statusBadge(status) {
+    const map = {
+      available: ['bg-emerald-50 text-emerald-700 border-emerald-200','bg-emerald-600','Sẵn sàng'],
+      borrowed: ['bg-amber-50 text-amber-700 border-amber-200','bg-amber-600','Đang mượn'],
+      lost: ['bg-rose-50 text-rose-700 border-rose-200','bg-rose-600','Mất'],
+      repair: ['bg-slate-100 text-slate-700 border-slate-200','bg-slate-500','Bảo trì'],
+    };
+    const [cls, dot, label] = map[status];
+    return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${cls}">
+      <span class="w-1.5 h-1.5 rounded-full ${dot}"></span>${label}
+    </span>`;
+  }
+
+  function typeBadge(book) {
+    const cls = book.type === 'digital' ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-blue-50 text-blue-700 border-blue-200';
+    const icon = book.type === 'digital' ? 'laptop_chromebook' : 'book_2';
+    const label = book.type === 'digital' ? `Số (${book.format})` : 'Sách giấy';
+    return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium border ${cls}">
+      <span class="material-symbols-outlined text-xs">${icon}</span>${label}
+    </span>`;
+  }
+
+  function rowHtml(book) {
+    return `
+    <tr id="book-row-${book.id}" data-id="${book.id}" class="hover:bg-blue-50/40 transition-colors cursor-pointer group">
+      <td class="py-3.5 px-4 font-mono-sm text-xs text-slate-600 whitespace-nowrap">
+        <div class="flex items-center gap-1.5">
+          <span>${book.isbn}</span>
+          <button data-isbn="${book.isbn}" title="Sao chép ISBN" class="copy-isbn-btn opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-blue-600 transition-opacity">
+            <span class="material-symbols-outlined text-xs">${copiedIsbn === book.isbn ? 'done' : 'content_copy'}</span>
+          </button>
+        </div>
+      </td>
+      <td class="py-3.5 px-4">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-12 rounded bg-slate-100 overflow-hidden shrink-0 border border-slate-200 shadow-2xs">
+            <img src="${book.coverUrl}" alt="${book.title}" class="w-full h-full object-cover" referrerpolicy="no-referrer" />
+          </div>
+          <div class="min-w-0">
+            <span class="font-semibold text-slate-900 line-clamp-1 group-hover:text-blue-600 transition-colors block">${book.title}</span>
+            <span class="text-xs text-slate-400 block truncate">${book.publisher} • ${book.publishYear}</span>
+          </div>
+        </div>
+      </td>
+      <td class="py-3.5 px-4 text-xs font-medium text-slate-700 whitespace-nowrap">${book.author}</td>
+      <td class="py-3.5 px-4 whitespace-nowrap">${typeBadge(book)}</td>
+      <td class="py-3.5 px-4 text-xs text-slate-600 whitespace-nowrap">${book.category}</td>
+      <td class="py-3.5 px-4 whitespace-nowrap">${statusBadge(book.status)}</td>
+      <td class="py-3.5 px-4 text-right whitespace-nowrap">
+        <div class="flex items-center justify-end gap-1" data-actions>
+          <button id="btn-view-book-${book.id}" title="Xem chi tiết" class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-slate-100 rounded-lg transition-colors">
+            <span class="material-symbols-outlined text-lg">visibility</span>
+          </button>
+          <button id="btn-edit-book-${book.id}" title="Chỉnh sửa thông tin" class="p-1.5 text-slate-400 hover:text-amber-600 hover:bg-slate-100 rounded-lg transition-colors">
+            <span class="material-symbols-outlined text-lg">edit</span>
+          </button>
+          <button id="btn-delete-book-${book.id}" data-title="${book.title}" class="delete-book-btn p-1.5 text-slate-400 hover:text-rose-600 hover:bg-slate-100 rounded-lg transition-colors" title="Xóa cuốn sách">
+            <span class="material-symbols-outlined text-lg">delete</span>
+          </button>
+        </div>
+      </td>
+    </tr>`;
+  }
+
+  function render() {
+    const search = document.getElementById('catalog-search-input').value.toLowerCase();
+    const category = document.getElementById('filter-category').value;
+    const type = document.getElementById('filter-type').value;
+    const status = document.getElementById('filter-status').value;
+
+    const filtered = BOOKS.filter(b => {
+      const matchesSearch = b.title.toLowerCase().includes(search) || b.author.toLowerCase().includes(search) || b.isbn.toLowerCase().includes(search);
+      const matchesCategory = category === 'all' || b.category === category;
+      const matchesType = type === 'all' || b.type === type;
+      const matchesStatus = status === 'all' || b.status === status;
+      return matchesSearch && matchesCategory && matchesType && matchesStatus;
+    });
+
+    const tbody = document.getElementById('catalog-tbody');
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-slate-400">
+        <span class="material-symbols-outlined text-4xl text-slate-300 block mb-2">auto_stories</span>
+        Không tìm thấy cuốn sách nào phù hợp với bộ lọc.
+      </td></tr>`;
+    } else {
+      tbody.innerHTML = filtered.map(rowHtml).join('');
+    }
+
+    document.getElementById('result-count').textContent = filtered.length;
+    document.getElementById('showing-count').textContent = filtered.length;
+
+    const hasFilters = search || category !== 'all' || type !== 'all' || status !== 'all';
+    const clearBtn = document.getElementById('btn-clear-filters');
+    clearBtn.classList.toggle('hidden', !hasFilters);
+    clearBtn.classList.toggle('flex', hasFilters);
+
+    // row/click handlers
+    tbody.querySelectorAll('tr[data-id]').forEach(tr => {
+      tr.addEventListener('click', () => alert('Mở trang chi tiết sách: ' + tr.dataset.id));
+    });
+    tbody.querySelectorAll('[data-actions]').forEach(el => {
+      el.addEventListener('click', (e) => e.stopPropagation());
+    });
+    tbody.querySelectorAll('.copy-isbn-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isbn = btn.dataset.isbn;
+        navigator.clipboard && navigator.clipboard.writeText(isbn);
+        copiedIsbn = isbn;
+        render();
+        setTimeout(() => { copiedIsbn = null; render(); }, 2000);
+      });
+    });
+    tbody.querySelectorAll('.delete-book-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (confirm(`Bạn có chắc muốn xóa cuốn "${btn.dataset.title}" khỏi hệ thống?`)) {
+          alert('Đã xóa (demo)');
+        }
+      });
+    });
+  }
+
+  document.getElementById('catalog-search-input').addEventListener('input', render);
+  document.getElementById('filter-category').addEventListener('change', render);
+  document.getElementById('filter-type').addEventListener('change', render);
+  document.getElementById('filter-status').addEventListener('change', render);
+  document.getElementById('btn-clear-filters').addEventListener('click', () => {
+    document.getElementById('catalog-search-input').value = '';
+    document.getElementById('filter-category').value = 'all';
+    document.getElementById('filter-type').value = 'all';
+    document.getElementById('filter-status').value = 'all';
+    render();
+  });
+  document.getElementById('btn-add-digital-book').addEventListener('click', () => alert('Thêm tài liệu số (demo)'));
+  document.getElementById('btn-add-physical-book').addEventListener('click', () => alert('Thêm đầu sách mới (demo)'));
+
+  render();
+</script>
+</body>
+</html>

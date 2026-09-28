@@ -84,3 +84,7 @@ run.py             # điểm chạy ứng dụng
 seed.py            # dữ liệu khởi tạo MySQL
 tests/             # kiểm thử xác thực và vòng đời mượn trả
 ```
+
+## Prototype giao diện
+
+Các bản thiết kế HTML ban đầu của repository được giữ nguyên trong `src/components/` để tham khảo. Ứng dụng Flask đang chạy sử dụng giao diện Jinja2 trong `app/templates/`.

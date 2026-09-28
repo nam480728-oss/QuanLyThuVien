@@ -2,11 +2,16 @@
 .mysql/
 .venv/
 venv/
+env/
 __pycache__/
 *.py[cod]
+*$py.class
 .pytest_cache/
 .coverage
 htmlcov/
+*.log
+*.sqlite3
+.DS_Store
 app/static/uploads/*
 !app/static/uploads/.gitkeep
 .idea/
